@@ -10,10 +10,10 @@
 > The app builds the typescript project and outputs plain javascript
 
 ## Technologies & Tools
-> NodeJS
-> Express
-> TypeScript
-> MongoDB & Mongoose
+* NodeJS,
+* Express,
+* TypeScript,
+* MongoDB & Mongoose
 
 ## Database
 > There's a test database on MongoDB Atlass. It's hardcoded atm because it's nothing serious for now.
