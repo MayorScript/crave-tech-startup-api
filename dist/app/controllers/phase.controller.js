@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const server_1 = require("../../server");
 //import db from '../models';
 const db = require('../models');
 const Phase = db.phases;
@@ -27,6 +28,7 @@ exports.create = (req, res) => {
     phase
         .save(phase)
         .then((data) => {
+        server_1.io.emit('phase-added', data);
         res.send(data);
     })
         .catch((err) => {

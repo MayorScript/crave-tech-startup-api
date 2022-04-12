@@ -1,7 +1,31 @@
 import express,{Request, Response} from 'express';
 const cors = require('cors');
+import http from 'http';
+import socketIO from 'socket.io';
+import { createServer } from "http";
+import { Server } from "socket.io";
 
 const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+    transports:['polling'],
+    cors:{
+        origin: '*'
+    }
+});
+io.on('connection', (socket) => {
+    console.log('A user is connected');
+
+    socket.on('message', (message) => {
+        console.log(`message from ${socket.id} : ${message}`);
+    })
+
+    socket.on('disconnect', () => {
+        console.log(`socket ${socket.id} disconnected`);
+    })
+})
+
+export {io};
 const corsOptions = {
     origin: '*'
 };
@@ -35,6 +59,6 @@ const router = require('./app/routes');
 app.use('/api',router);
 const PORT = 3001;
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
     console.log(`Application is running at port ${PORT}`);
 })

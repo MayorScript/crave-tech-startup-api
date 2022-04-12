@@ -3,9 +3,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.io = void 0;
 const express_1 = __importDefault(require("express"));
 const cors = require('cors');
+const http_1 = require("http");
+const socket_io_1 = require("socket.io");
 const app = (0, express_1.default)();
+const httpServer = (0, http_1.createServer)(app);
+const io = new socket_io_1.Server(httpServer, {
+    transports: ['polling'],
+    cors: {
+        origin: '*'
+    }
+});
+exports.io = io;
+io.on('connection', (socket) => {
+    console.log('A user is connected');
+    socket.on('message', (message) => {
+        console.log(`message from ${socket.id} : ${message}`);
+    });
+    socket.on('disconnect', () => {
+        console.log(`socket ${socket.id} disconnected`);
+    });
+});
 const corsOptions = {
     origin: '*'
 };
@@ -34,6 +54,6 @@ db.mongoose
 const router = require('./app/routes');
 app.use('/api', router);
 const PORT = 3001;
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
     console.log(`Application is running at port ${PORT}`);
 });

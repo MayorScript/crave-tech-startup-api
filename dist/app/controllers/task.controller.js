@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 //import db from '../models';
 const db = require('../models');
+const server_1 = require("../../server");
 const Task = db.tasks;
 const Phase = db.phases;
 exports.create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -26,6 +27,7 @@ exports.create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
         const data = yield task.save(task);
         yield Phase.findByIdAndUpdate(req.body.phase, { $push: { tasks: data.id } }, { new: true, useFindAndModify: false });
+        server_1.io.emit('task-added', data);
         res.send(data);
     }
     catch (err) {

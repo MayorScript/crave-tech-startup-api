@@ -1,4 +1,5 @@
 import {Request, Response} from 'express';
+import {io} from "../../server";
 //import db from '../models';
 const db = require('../models');
 const Phase = db.phases;
@@ -19,6 +20,7 @@ exports.create = (req:Request, res:Response) => {
   phase
     .save(phase)
     .then((data:any) => {
+        io.emit('phase-added', data)
       res.send(data);
     })
     .catch((err:any) => {

@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 //import db from '../models';
 const db = require('../models');
+import {io} from "../../server";
 const Task = db.tasks;
 const Phase = db.phases;
 
@@ -21,6 +22,7 @@ exports.create = async (req:Request, res:Response) => {
       {$push: {tasks: data.id}},
       { new: true, useFindAndModify: false },
     );
+      io.emit('task-added', data)
     res.send(data);
   }catch(err:any){
         res.status(500).send({
