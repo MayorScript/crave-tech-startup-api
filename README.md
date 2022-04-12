@@ -1,4 +1,4 @@
-# This is an api for recording startup progress for Crave Tech
+# Api for documenting startup progress for Crave Tech
 
 ## Project Setup
 ** Install dependencies **
